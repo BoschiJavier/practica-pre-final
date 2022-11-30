@@ -46,7 +46,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>spring-boot-web</finalName>
+        <finalName>dh-api-configserver</finalName>
 
         <plugins>
             <plugin>

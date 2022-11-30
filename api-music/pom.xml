@@ -71,7 +71,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>spring-boot-web</finalName>
+        <finalName>dh-api-music</finalName>
 
         <plugins>
             <plugin>

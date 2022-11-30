@@ -1,7 +1,7 @@
 version: '3.3'
 services:
   eureka-server:
-    build: practica-pre-final/eurekaServer
+    build: eurekaServer
     restart: always
     ports:
       - "8761:8761"
@@ -11,7 +11,7 @@ services:
       - config-server
 
   config-server:
-    build: practica-pre-final/configServer
+    build: configServer
     restart: always
     ports:
       - "8888:8888"
@@ -19,7 +19,7 @@ services:
       - '8888'
 
   gateway:
-    build: practica-pre-final/gateway
+    build: gateway
     restart: always
     ports:
       - "8080:8080"
@@ -30,7 +30,7 @@ services:
       - eureka-server
 
   api-music:
-    build: practica-pre-final/api-music
+    build: api-music
     restart: always
     ports:
       - "9001:9001"
@@ -42,7 +42,7 @@ services:
       - mysql-contenedor
 
   api-playlist:
-    build: practica-pre-final/api-playlist
+    build: api-playlist
     restart: always
     ports:
       - "9002:9002"

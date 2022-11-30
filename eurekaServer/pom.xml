@@ -56,7 +56,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>spring-boot-web</finalName>
+        <finalName>dh-api-eurekaserver</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
