@@ -1,0 +1,21 @@
+server:
+  port: ${PORT:${SERVER_PORT:9002}}
+spring:
+  application:
+    name: api-playlist
+  datasource:
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://mysql-contenedor:3306/spotify-dev
+    username: usr-spotify
+    password: pwd-spotify
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+    
+eureka:
+   client:
+      registerWithEureka: true
+      fetchRegistry: true
+      serviceURL:
+         defaultZone: http://eureka-server:8761/eureka

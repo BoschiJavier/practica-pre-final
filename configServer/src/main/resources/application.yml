@@ -8,6 +8,7 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/jonathanvictoricadh/esp-back-1-202210-g1-config
+          uri: https://github.com/jonathanvictoricadh/practica-pre-final
           default-label: main
           force-pull: true
+          search-paths: configData

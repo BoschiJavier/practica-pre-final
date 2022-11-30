@@ -1,0 +1,69 @@
+version: '3.3'
+services:
+  eureka-server:
+    build: practica-pre-final/eurekaServer
+    restart: always
+    ports:
+      - "8761:8761"
+    expose:
+      - '8761'
+    depends_on:
+      - config-server
+
+  config-server:
+    build: practica-pre-final/configServer
+    restart: always
+    ports:
+      - "8888:8888"
+    expose:
+      - '8888'
+
+  gateway:
+    build: practica-pre-final/gateway
+    restart: always
+    ports:
+      - "8080:8080"
+    expose:
+      - '8080'
+    depends_on:
+      - config-server
+      - eureka-server
+
+  api-music:
+    build: practica-pre-final/api-music
+    restart: always
+    ports:
+      - "9001:9001"
+    expose:
+      - '9001'
+    depends_on:
+      - config-server
+      - eureka-server
+      - mysql-contenedor
+
+  api-playlist:
+    build: practica-pre-final/api-playlist
+    restart: always
+    ports:
+      - "9002:9002"
+    expose:
+      - '9002'
+    depends_on:
+      - config-server
+      - eureka-server
+      - mysql-contenedor
+
+  mysql-contenedor:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'spotify-dev'
+      MYSQL_USER: 'usr-spotify'
+      MYSQL_PASSWORD: 'pwd-spotify'
+      MYSQL_ROOT_PASSWORD: 'password'
+    ports:
+      # <Port exposed> : < MySQL Port running inside container>
+      - '3306:3306'
+    expose:
+      - '3306'
+   
