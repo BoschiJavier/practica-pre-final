@@ -1,60 +1,94 @@
-version: '3.3'
+version: '3.9'
 services:
   eureka-server:
     build: eurekaServer
+    container_name: eureka-server
     restart: always
     ports:
-      - "8761:8761"
+      - "8761:8761/tcp"
     expose:
       - '8761'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://eureka-server:8761/actuator/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
     depends_on:
+      config-server:
+        condition: service_healthy
+    links:
       - config-server
+
 
   config-server:
     build: configServer
+    container_name: config-server
     restart: always
     ports:
-      - "8888:8888"
-    expose:
-      - '8888'
+      - "8888/tcp"
+    healthcheck:
+      test: ["CMD", "curl", "-I", "http://config-server:8888/actuator/health"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
 
   gateway:
     build: gateway
     restart: always
+    container_name: gateway
     ports:
       - "8080:8080"
     expose:
       - '8080'
     depends_on:
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    links:
       - config-server
       - eureka-server
-
   api-music:
     build: api-music
+    container_name: api-music
     restart: always
     ports:
       - "9001:9001"
     expose:
       - '9001'
     depends_on:
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      mysql-contenedor:
+        condition: service_healthy
+    links:
       - config-server
       - eureka-server
       - mysql-contenedor
-
   api-playlist:
     build: api-playlist
+    container_name: api-playlist
     restart: always
     ports:
       - "9002:9002"
     expose:
       - '9002'
     depends_on:
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+      mysql-contenedor:
+        condition: service_healthy
+    links:
       - config-server
       - eureka-server
       - mysql-contenedor
-
   mysql-contenedor:
     image: mysql:5.7
+    container_name: mysql-contenedor
     restart: always
     environment:
       MYSQL_DATABASE: 'spotify-dev'
@@ -66,4 +100,9 @@ services:
       - '3306:3306'
     expose:
       - '3306'
+    healthcheck:
+      test: [ "CMD", "usr-spotify", "ping", "-ppwd-spotify", "--silent" ]
+      interval: 5s
+      timeout: 3s
+      retries: 10
    
