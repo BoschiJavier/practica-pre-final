@@ -4,9 +4,9 @@ services:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_DATABASE: 'digitalhouse-dev'
-      MYSQL_USER: 'usr-digitalhouse'
-      MYSQL_PASSWORD: 'pwd-digitalhouse'
+      MYSQL_DATABASE: 'spotify-dev'
+      MYSQL_USER: 'usr-spotify'
+      MYSQL_PASSWORD: 'pwd-spotify'
       MYSQL_ROOT_PASSWORD: 'password'
     ports:
       # <Port exposed> : < MySQL Port running inside container>
