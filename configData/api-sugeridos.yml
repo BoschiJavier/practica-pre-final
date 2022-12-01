@@ -12,12 +12,11 @@ spring:
     name: api-sugeridos
   data:
     mongodb:
-      authentication-database: admin
-      username: usr-spotify-mongo
-      password: pwd-spotify-mongo
-      database: spotify-dev-mongo
+      username: usrspotifymongo
+      password: pwdspotifymongo
+      database: spotifydevmongo
       port: 27017
-      host: mongo-contenedor
+      host: mongocontenedor
     
     
 eureka:

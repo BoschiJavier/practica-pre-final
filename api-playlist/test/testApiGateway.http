@@ -3,8 +3,9 @@ POST http://localhost:8080/api/v1/playlists
 Content-Type: application/json
 
 {
-  "playListId": 1,
-  "name": "PlayList 1"
+  "playListId": 2,
+  "name": "PlayList 1",
+  "mgCount": 50
 }
 
 ### Send POST request with json body
@@ -24,9 +25,10 @@ POST http://localhost:8080/api/v1/musics
 Content-Type: application/json
 
 {
-"musicId": 12222,
+"musicId": 122296,
 "name": "Cancion 1222",
-"singerName": "Cantante 12222"
+"singerName": "Cantante 12222",
+  "mgCount": 5
 }
 
 ### Send POST request with json body
@@ -36,7 +38,8 @@ Content-Type: application/json
 {
   "musicId": 12223,
   "name": "Cancion 12223",
-  "singerName": "Cantante 12223"
+  "singerName": "Cantante 12223",
+  "mgCount": 10
 }
 
 ### Send POST request with json body

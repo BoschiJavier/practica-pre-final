@@ -11,6 +11,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,24 +39,33 @@ public class NewPlaylistEventConsumer {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Data {
-        private Data.PlaylistDto playlist;
+    public static class Data implements Serializable {
+
+        @Serial
+        private static final long serialVersionUID = 1L;
+        private Data.PlaylistDto playlist= new PlaylistDto();
 
         @Getter
         @Setter
         @NoArgsConstructor
         @AllArgsConstructor
-        public static class PlaylistDto {
+        public static class PlaylistDto implements Serializable {
+
+            @Serial
+            private static final long serialVersionUID = 1L;
             private Long playListId;
             private String name;
-            private Integer mgCount = 0;
+            private Integer mgCount;
             private List<Data.PlaylistDto.PlaylistMusicDto> musics = new ArrayList<>();
 
             @Getter
             @Setter
             @NoArgsConstructor
             @AllArgsConstructor
-            public static class PlaylistMusicDto {
+            public static class PlaylistMusicDto implements Serializable {
+
+                @Serial
+                private static final long serialVersionUID = 1L;
                 private Long musicId;
                 private String musicName;
             }

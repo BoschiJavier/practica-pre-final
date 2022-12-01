@@ -106,7 +106,7 @@ services:
     links:
       - config-server
       - eureka-server
-      - mongo-contenedor
+      - mongocontenedor
       - rabbitmq-contenedor
       - zipkin-contenedor
   mysql-contenedor:
@@ -128,14 +128,14 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
-  mongo-contenedor:
+  mongocontenedor:
     image: mongo
-    container_name: mongo-contenedor
+    container_name: mongocontenedor
     restart: always
     environment:
-      - MONGO_INITDB_DATABASE=spotify-dev-mongo
-      - MONGO_INITDB_ROOT_USERNAME=usr-spotify-mongo
-      - MONGO_INITDB_ROOT_PASSWORD=pwd-spotify-mongo
+      MONGO_INITDB_DATABASE: 'spotifydevmongo'
+      MONGO_INITDB_ROOT_USERNAME: 'usrspotifymongo'
+      MONGO_INITDB_ROOT_PASSWORD: 'pwdspotifymongo'
     ports:
       - 27017:27017
     expose:

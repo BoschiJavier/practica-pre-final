@@ -11,6 +11,8 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Component
 public class NewMusicEventConsumer {
 
@@ -32,8 +34,8 @@ public class NewMusicEventConsumer {
     @Setter
     @NoArgsConstructor
     @AllArgsConstructor
-    public static class Data{
-        private MusicDto music;
+    public static class Data implements Serializable {
+        private MusicDto music=new MusicDto();
 
         @Getter
         @Setter
@@ -43,6 +45,7 @@ public class NewMusicEventConsumer {
             private Long musicId;
             private String name;
             private String singerName;
+            private Integer mgCount;
         }
 
     }
