@@ -1,6 +1,7 @@
 package com.spotify.playlist.service;
 
 import com.spotify.playlist.client.MusicFeign;
+import com.spotify.playlist.event.NewPlaylistEventProducer;
 import com.spotify.playlist.model.PlayListMusic;
 import com.spotify.playlist.model.Playlist;
 import com.spotify.playlist.repository.PlaylistRepository;
@@ -13,15 +14,18 @@ public class PlaylistService {
 
     private final PlaylistRepository playlistRepository;
 
+    private final NewPlaylistEventProducer newPlaylistEventProducer;
     private final MusicFeign musicFeign;
 
-    public PlaylistService(PlaylistRepository playlistRepository, MusicFeign musicFeign) {
+    public PlaylistService(PlaylistRepository playlistRepository, NewPlaylistEventProducer newPlaylistEventProducer, MusicFeign musicFeign) {
         this.playlistRepository = playlistRepository;
+        this.newPlaylistEventProducer = newPlaylistEventProducer;
         this.musicFeign = musicFeign;
     }
 
     public void save(Playlist playlist) {
         playlistRepository.save(playlist);
+        newPlaylistEventProducer.execute(playlist);
     }
 
 
@@ -53,6 +57,8 @@ public class PlaylistService {
             }
             playList.get().getMusics().add(new PlayListMusic(null, playList.get(),result.getMusicId(),result.getName()));
             playlistRepository.save(playList.get());
+
+            newPlaylistEventProducer.execute(playList.get());
         }else{
             throw new Exception("Playlist not found");
         }

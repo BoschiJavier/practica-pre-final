@@ -1,5 +1,5 @@
 server:
-  port: ${PORT:${SERVER_PORT:9001}}
+  port: ${PORT:${SERVER_PORT:9003}}
 spring:
   rabbitmq:
     username: guest
@@ -9,12 +9,12 @@ spring:
   zipkin:
     baseUrl: http://zipkin-contenedor:9411/
   application:
-    name: api-music
+    name: api-sugeridos
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://mysql-contenedor:3366/spotify-dev-mysql
-    username: usr-spotify-mysql
-    password: pwd-spotify-mysql
+    url: jdbc:mysql://mongo-contenedor:5566/spotify-dev-mongo
+    username: usr-spotify-mongo
+    password: pwd-spotify-mongo
   jpa:
     hibernate.ddl-auto: update
     generate-ddl: true

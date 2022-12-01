@@ -31,4 +31,7 @@ public class Music implements Serializable {
     @Column(name = "SINGER_NAME", nullable = false, length = 50)
     private String singerName;
 
+    @Column(name = "MGCOUNT", nullable = false, columnDefinition = " integer default 0")
+    private Integer mgCount = 0;
+
 }

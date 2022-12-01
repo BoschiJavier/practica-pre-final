@@ -67,6 +67,8 @@ services:
       - config-server
       - eureka-server
       - mysql-contenedor
+      - rabbitmq-contenedor
+      - zipkin-contenedor
   api-playlist:
     build: api-playlist
     container_name: api-playlist
@@ -86,23 +88,80 @@ services:
       - config-server
       - eureka-server
       - mysql-contenedor
+      - rabbitmq-contenedor
+      - zipkin-contenedor
+  api-sugeridos:
+    build: api-sugeridos
+    container_name: api-sugeridos
+    restart: always
+    ports:
+      - "9003:9003"
+    expose:
+      - '9003'
+    depends_on:
+      config-server:
+        condition: service_healthy
+      eureka-server:
+        condition: service_healthy
+    links:
+      - config-server
+      - eureka-server
+      - mongo-contenedor
+      - rabbitmq-contenedor
+      - zipkin-contenedor
   mysql-contenedor:
     image: mysql:5.7
     container_name: mysql-contenedor
     restart: always
     environment:
-      MYSQL_DATABASE: 'spotify-dev'
-      MYSQL_USER: 'usr-spotify'
-      MYSQL_PASSWORD: 'pwd-spotify'
+      MYSQL_DATABASE: 'spotify-dev-mysql'
+      MYSQL_USER: 'usr-spotify-mysql'
+      MYSQL_PASSWORD: 'pwd-spotify-mysql'
       MYSQL_ROOT_PASSWORD: 'password'
     ports:
       # <Port exposed> : < MySQL Port running inside container>
-      - '3306:3306'
+      - '3366:3306'
     expose:
-      - '3306'
+      - '3366'
     healthcheck:
       test: [ "CMD", "usr-spotify", "ping", "-ppwd-spotify", "--silent" ]
       interval: 5s
       timeout: 3s
       retries: 10
-   
+  mongo-contenedor:
+    image: mongo
+    container_name: mongo-contenedor
+    restart: always
+    environment:
+      - MONGO_INITDB_DATABASE=spotify-dev-mongo
+      - MONGO_INITDB_ROOT_USERNAME=usr-spotify-mongo
+      - MONGO_INITDB_ROOT_PASSWORD=pwd-spotify-mongo
+    ports:
+      - 5566:27017
+    expose:
+      - 5566
+  zipkin-contenedor:
+    image: openzipkin/zipkin-slim
+    container_name: zipkin-contenedor
+    environment:
+      - STORAGE_TYPE=mem
+    ports:
+      - 9411:9411
+    expose:
+      - 9411
+    depends_on:
+      - storage-contenedor
+  storage-contenedor:
+    image: busybox:1.31.0
+    container_name: storage-contenedor
+
+  rabbitmq-contenedor:
+    image: rabbitmq:3-management
+    container_name: rabbitmq-contenedor
+    hostname: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    expose:
+      - 15672
+      - 5672

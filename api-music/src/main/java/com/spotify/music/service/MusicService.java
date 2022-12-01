@@ -1,5 +1,6 @@
 package com.spotify.music.service;
 
+import com.spotify.music.event.NewMusicEventProducer;
 import com.spotify.music.model.Music;
 import com.spotify.music.repository.MusicRepository;
 import org.springframework.stereotype.Service;
@@ -11,12 +12,16 @@ public class MusicService {
 
     private final MusicRepository musicRepository;
 
-    public MusicService(MusicRepository musicRepository) {
+    private final NewMusicEventProducer newMusicEventProducer;
+
+    public MusicService(MusicRepository musicRepository, NewMusicEventProducer newMusicEventProducer) {
         this.musicRepository = musicRepository;
+        this.newMusicEventProducer = newMusicEventProducer;
     }
 
     public void save(Music music) {
         musicRepository.save(music);
+        newMusicEventProducer.execute(music);
     }
 
 

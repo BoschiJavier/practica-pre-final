@@ -9,6 +9,6 @@ spring:
       server:
         git:
           uri: https://github.com/jonathanvictoricadh/practica-pre-final
-          default-label: main
+          default-label: pre-final
           force-pull: true
           search-paths: configData
