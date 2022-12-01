@@ -47,7 +47,7 @@ public class RabbitMQConfig {
 
     @Bean
     public Binding declareBindingSpecificNewPlaylist() {
-        return BindingBuilder.bind(newPlaylistQueue()).to(appExchange()).with(QUEUE_NEW_PLAYLIST);
+        return BindingBuilder.bind(newPlaylistQueue()).to(appExchange()).with(TOPIC_NEW_PLAYLIST);
     }
 
 
