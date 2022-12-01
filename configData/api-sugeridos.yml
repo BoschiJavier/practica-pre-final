@@ -10,15 +10,14 @@ spring:
     baseUrl: http://zipkin-contenedor:9411/
   application:
     name: api-sugeridos
-  datasource:
-    driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://mongo-contenedor:5566/spotify-dev-mongo
-    username: usr-spotify-mongo
-    password: pwd-spotify-mongo
-  jpa:
-    hibernate.ddl-auto: update
-    generate-ddl: true
-    show-sql: true
+  data:
+    mongodb:
+      authentication-database: admin
+      username: usr-spotify-mongo
+      password: pwd-spotify-mongo
+      database: spotify-dev-mongo
+      port: 5566
+      host: mongo-contenedor
     
     
 eureka:
