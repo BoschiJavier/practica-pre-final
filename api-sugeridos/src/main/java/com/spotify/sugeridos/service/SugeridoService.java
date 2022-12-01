@@ -30,8 +30,8 @@ public class SugeridoService {
         this.musicFeign = musicFeign;
         this.playlistFeign = playlistFeign;
         this.popularidadMg = new HashMap<>();
-        popularidadMg.put("MUY_POPULAR", 10);
-        popularidadMg.put("NORMAL", 3);
+        popularidadMg.put("MUY_POPULAR", 3);
+        popularidadMg.put("NORMAL", 1);
     }
 
     public GetSugerenciaByPopularidadRequest getSugerenciaByPopularidadOnline(String popularidad) {

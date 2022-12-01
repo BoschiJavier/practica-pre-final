@@ -26,9 +26,11 @@ public class NewPlaylistEventProducer {
 
 
     public void execute(Playlist playlist) {
-        NewPlaylistEventProducer.Data data= new NewPlaylistEventProducer.Data();
-        BeanUtils.copyProperties(playlist,data.getPlaylist());
-        BeanUtils.copyProperties(playlist.getMusics(),data.getPlaylist().getMusics());
+        NewPlaylistEventProducer.Data data = new NewPlaylistEventProducer.Data();
+        BeanUtils.copyProperties(playlist, data.getPlaylist());
+        if (data.getPlaylist().getMusics() != null && playlist.getMusics() != null) {
+            BeanUtils.copyProperties(playlist.getMusics(), data.getPlaylist().getMusics());
+        }
         rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE_NAME, RabbitMQConfig.TOPIC_NEW_PLAYLIST, data);
     }
 
@@ -41,7 +43,7 @@ public class NewPlaylistEventProducer {
 
         @Serial
         private static final long serialVersionUID = 1L;
-        private PlaylistDto playlist= new PlaylistDto();
+        private PlaylistDto playlist = new PlaylistDto();
 
         @Getter
         @Setter

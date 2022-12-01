@@ -18,7 +18,10 @@ spring:
           uri: lb://api-music
           predicates:
             - Path=/api/v1/musics/**
-
+        - id: mssugeridos
+          uri: lb://api-sugeridos
+          predicates:
+            - Path=/api/v1/sugeridos/**
 info:
   app:
     name: ${spring.application.name}

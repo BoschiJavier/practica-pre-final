@@ -29,7 +29,9 @@ public class NewPlaylistEventConsumer {
     public void execute(NewPlaylistEventConsumer.Data data) {
         PlaylistEntity playlistNew= new PlaylistEntity();
         BeanUtils.copyProperties(data.getPlaylist(),playlistNew);
-        BeanUtils.copyProperties(data.getPlaylist().getMusics(),playlistNew.getMusics());
+        if (data.getPlaylist().getMusics() != null && playlistNew.getMusics() != null) {
+            BeanUtils.copyProperties(data.getPlaylist().getMusics(),playlistNew.getMusics());
+        }
         playlistRepositoryMongo.deleteById(data.getPlaylist().getPlayListId());
         playlistRepositoryMongo.save(playlistNew);
     }

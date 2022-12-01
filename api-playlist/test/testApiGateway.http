@@ -69,3 +69,12 @@ Content-Type: application/json
 ### Send POST request with json body
 GET http://localhost:8080/api/v1/musics
 Content-Type: application/json
+
+
+### Send POST request with json body
+GET http://localhost:8080/api/v1/sugeridos/online/NORMAL
+Content-Type: application/json
+
+### Send POST request with json body
+GET http://localhost:8080/api/v1/sugeridos/offline/NORMAL
+Content-Type: application/json
