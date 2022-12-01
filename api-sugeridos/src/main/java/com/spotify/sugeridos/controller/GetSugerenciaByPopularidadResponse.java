@@ -11,10 +11,10 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetSugerenciaByPopularidadRequest {
+public class GetSugerenciaByPopularidadResponse {
 
-    private List<GetSugerenciaByPopularidadRequest.MusicDto> musics = new ArrayList<>();
-    private List<GetSugerenciaByPopularidadRequest.PlaylistDto> playlist= new ArrayList<>();
+    private List<GetSugerenciaByPopularidadResponse.MusicDto> musics = new ArrayList<>();
+    private List<GetSugerenciaByPopularidadResponse.PlaylistDto> playlist= new ArrayList<>();
     @Getter
     @Setter
     @NoArgsConstructor

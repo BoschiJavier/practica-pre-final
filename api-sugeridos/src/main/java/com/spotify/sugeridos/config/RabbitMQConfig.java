@@ -26,8 +26,6 @@ public class RabbitMQConfig {
         return new TopicExchange(EXCHANGE_NAME);
     }
 
-
-
     @Bean
     public Queue newMusicQueue() {
         return new Queue(QUEUE_NEW_MUSIC);

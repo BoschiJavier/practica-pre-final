@@ -24,7 +24,6 @@ public class NewPlaylistEventConsumer {
     public NewPlaylistEventConsumer(PlaylistRepositoryMongo playlistRepositoryMongo) {
         this.playlistRepositoryMongo = playlistRepositoryMongo;
     }
-
     @RabbitListener(queues = RabbitMQConfig.QUEUE_NEW_PLAYLIST)
     public void execute(NewPlaylistEventConsumer.Data data) {
         PlaylistEntity playlistNew= new PlaylistEntity();

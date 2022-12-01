@@ -22,13 +22,13 @@ public class SugeridoController {
 
     @GetMapping("/online/{popularidad}")
     @ResponseStatus(code = HttpStatus.OK)
-    public ResponseEntity<GetSugerenciaByPopularidadRequest> getSugerenciaByPopularidadOnline(@PathVariable String popularidad) {
+    public ResponseEntity<GetSugerenciaByPopularidadResponse> getSugerenciaByPopularidadOnline(@PathVariable String popularidad) {
         return ResponseEntity.ok(sugeridoService.getSugerenciaByPopularidadOnline(popularidad));
     }
 
     @GetMapping("/offline/{popularidad}")
     @ResponseStatus(code = HttpStatus.OK)
-    public ResponseEntity<GetSugerenciaByPopularidadRequest> getSugerenciaByPopularidadOffline(@PathVariable String popularidad) {
+    public ResponseEntity<GetSugerenciaByPopularidadResponse> getSugerenciaByPopularidadOffline(@PathVariable String popularidad) {
         return ResponseEntity.ok(sugeridoService.getSugerenciaByPopularidadOffline(popularidad));
     }
 }

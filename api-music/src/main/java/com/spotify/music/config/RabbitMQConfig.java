@@ -16,7 +16,6 @@ public class RabbitMQConfig {
 
     public static final String EXCHANGE_NAME = "spotifyExchange";
     public static final String TOPIC_NEW_MUSIC = "com.spotify.newMusic";
-    public static final String TOPIC_NEW_PLAYLIST = "com.spotify.newPlaylist";
 
 
     @Bean

@@ -3,9 +3,11 @@ package com.spotify.sugeridos.service;
 
 import com.spotify.sugeridos.client.MusicFeign;
 import com.spotify.sugeridos.client.PlaylistFeign;
-import com.spotify.sugeridos.controller.GetSugerenciaByPopularidadRequest;
+import com.spotify.sugeridos.controller.GetSugerenciaByPopularidadResponse;
 import com.spotify.sugeridos.repository.MusicRepositoryMongo;
 import com.spotify.sugeridos.repository.PlaylistRepositoryMongo;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
@@ -34,36 +36,65 @@ public class SugeridoService {
         popularidadMg.put("NORMAL", 1);
     }
 
-    public GetSugerenciaByPopularidadRequest getSugerenciaByPopularidadOnline(String popularidad) {
-        GetSugerenciaByPopularidadRequest response = new GetSugerenciaByPopularidadRequest();
-        var musicsFilter = musicFeign.getAll().stream().filter(music -> music.getMgCount() >= popularidadMg.get(popularidad)).collect(Collectors.toList());
-        response.setMusics(musicsFilter.stream().map(music -> {
-            GetSugerenciaByPopularidadRequest.MusicDto musicResponse = new GetSugerenciaByPopularidadRequest.MusicDto();
-            BeanUtils.copyProperties(music, musicResponse);
-            return musicResponse;
-        }).collect(Collectors.toList()));
-
-        var playListFilter = playlistFeign.getAll().stream().filter(playlist -> playlist.getMgCount() >= popularidadMg.get(popularidad)).collect(Collectors.toList());
-        response.setPlaylist(playListFilter.stream().map(playlist -> {
-            GetSugerenciaByPopularidadRequest.PlaylistDto playlistResponse = new GetSugerenciaByPopularidadRequest.PlaylistDto();
-            BeanUtils.copyProperties(playlist, playlistResponse);
-            return playlistResponse;
-        }).collect(Collectors.toList()));
+    public GetSugerenciaByPopularidadResponse getSugerenciaByPopularidadOnline(String popularidad) {
+        GetSugerenciaByPopularidadResponse response = new GetSugerenciaByPopularidadResponse();
+        findAllMusicByPopularidad(popularidad, response);
+        findAllPlaylistByPopularidad(popularidad, response);
         return response;
     }
 
-    public GetSugerenciaByPopularidadRequest getSugerenciaByPopularidadOffline(String popularidad) {
-        GetSugerenciaByPopularidadRequest response = new GetSugerenciaByPopularidadRequest();
+    @Retry(name = "retryMusic")
+    @CircuitBreaker(name = "clientMusic", fallbackMethod = "findAllPlaylistFallBack")
+    private void findAllPlaylistByPopularidad(String popularidad, GetSugerenciaByPopularidadResponse response) {
+        var playListFilter = playlistFeign.getAll().stream().filter(playlist -> playlist.getMgCount() >= popularidadMg.get(popularidad)).collect(Collectors.toList());
+        response.setPlaylist(playListFilter.stream().map(playlist -> {
+            GetSugerenciaByPopularidadResponse.PlaylistDto playlistResponse = new GetSugerenciaByPopularidadResponse.PlaylistDto();
+            BeanUtils.copyProperties(playlist, playlistResponse);
+            return playlistResponse;
+        }).collect(Collectors.toList()));
+    }
+
+   public void findAllPlaylistFallBack(String popularidad, GetSugerenciaByPopularidadResponse response, Throwable t) {
+       var playListFilter = playlistRepositoryMongo.findAll().stream().filter(playlist -> playlist.getMgCount() >= popularidadMg.get(popularidad)).collect(Collectors.toList());
+       response.setPlaylist(playListFilter.stream().map(playlist -> {
+           GetSugerenciaByPopularidadResponse.PlaylistDto playlistResponse = new GetSugerenciaByPopularidadResponse.PlaylistDto();
+           BeanUtils.copyProperties(playlist, playlistResponse);
+           return playlistResponse;
+       }).collect(Collectors.toList()));
+   }
+
+    @Retry(name = "retryMusic")
+    @CircuitBreaker(name = "clientMusic", fallbackMethod = "findAllMusicFallBack")
+    private void findAllMusicByPopularidad(String popularidad, GetSugerenciaByPopularidadResponse response) {
+        var musicsFilter = musicFeign.getAll().stream().filter(music -> music.getMgCount() >= popularidadMg.get(popularidad)).collect(Collectors.toList());
+        response.setMusics(musicsFilter.stream().map(music -> {
+            GetSugerenciaByPopularidadResponse.MusicDto musicResponse = new GetSugerenciaByPopularidadResponse.MusicDto();
+            BeanUtils.copyProperties(music, musicResponse);
+            return musicResponse;
+        }).collect(Collectors.toList()));
+    }
+
+    private void findAllMusicFallBack(String popularidad, GetSugerenciaByPopularidadResponse response, Throwable t) {
         var musicsFilter = musicRepositoryMongo.findAll().stream().filter(music -> music.getMgCount() >= popularidadMg.get(popularidad)).collect(Collectors.toList());
         response.setMusics(musicsFilter.stream().map(music -> {
-            GetSugerenciaByPopularidadRequest.MusicDto musicResponse = new GetSugerenciaByPopularidadRequest.MusicDto();
+            GetSugerenciaByPopularidadResponse.MusicDto musicResponse = new GetSugerenciaByPopularidadResponse.MusicDto();
+            BeanUtils.copyProperties(music, musicResponse);
+            return musicResponse;
+        }).collect(Collectors.toList()));
+    }
+
+    public GetSugerenciaByPopularidadResponse getSugerenciaByPopularidadOffline(String popularidad) {
+        GetSugerenciaByPopularidadResponse response = new GetSugerenciaByPopularidadResponse();
+        var musicsFilter = musicRepositoryMongo.findAll().stream().filter(music -> music.getMgCount() >= popularidadMg.get(popularidad)).collect(Collectors.toList());
+        response.setMusics(musicsFilter.stream().map(music -> {
+            GetSugerenciaByPopularidadResponse.MusicDto musicResponse = new GetSugerenciaByPopularidadResponse.MusicDto();
             BeanUtils.copyProperties(music, musicResponse);
             return musicResponse;
         }).collect(Collectors.toList()));
 
         var playListFilter = playlistRepositoryMongo.findAll().stream().filter(playlist -> playlist.getMgCount() >= popularidadMg.get(popularidad)).collect(Collectors.toList());
         response.setPlaylist(playListFilter.stream().map(playlist -> {
-            GetSugerenciaByPopularidadRequest.PlaylistDto playlistResponse = new GetSugerenciaByPopularidadRequest.PlaylistDto();
+            GetSugerenciaByPopularidadResponse.PlaylistDto playlistResponse = new GetSugerenciaByPopularidadResponse.PlaylistDto();
             BeanUtils.copyProperties(playlist, playlistResponse);
             return playlistResponse;
         }).collect(Collectors.toList()));
