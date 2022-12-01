@@ -5,17 +5,17 @@ services:
     container_name: eureka-server
     restart: always
     ports:
-      - "8761:8761/tcp"
+      - "8761:8761"
     expose:
       - '8761'
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://eureka-server:8761/actuator/health"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-    depends_on:
-      config-server:
-        condition: service_healthy
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://eureka-server:8761/actuator/health"]
+#      interval: 5s
+#      timeout: 3s
+#      retries: 10
+#    depends_on:
+#      config-server:
+#        condition: service_healthy
     links:
       - config-server
 
@@ -25,12 +25,14 @@ services:
     container_name: config-server
     restart: always
     ports:
-      - "8888/tcp"
-    healthcheck:
-      test: ["CMD", "curl", "-I", "http://config-server:8888/actuator/health"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
+      - "8888:8888"
+    expose:
+      - '8888'
+#    healthcheck:
+#      test: ["CMD", "curl", "-I", "http://config-server:8888/actuator/health"]
+#      interval: 5s
+#      timeout: 3s
+#      retries: 10
 
   gateway:
     build: gateway
@@ -40,11 +42,11 @@ services:
       - "8080:8080"
     expose:
       - '8080'
-    depends_on:
-      config-server:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
+#    depends_on:
+#      config-server:
+#        condition: service_healthy
+#      eureka-server:
+#        condition: service_healthy
     links:
       - config-server
       - eureka-server
@@ -56,13 +58,13 @@ services:
       - "9001:9001"
     expose:
       - '9001'
-    depends_on:
-      config-server:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
-      mysql-contenedor:
-        condition: service_healthy
+#    depends_on:
+#      config-server:
+#        condition: service_healthy
+#      eureka-server:
+#        condition: service_healthy
+#      mysql-contenedor:
+#        condition: service_healthy
     links:
       - config-server
       - eureka-server
@@ -77,13 +79,13 @@ services:
       - "9002:9002"
     expose:
       - '9002'
-    depends_on:
-      config-server:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
-      mysql-contenedor:
-        condition: service_healthy
+#    depends_on:
+#      config-server:
+#        condition: service_healthy
+#      eureka-server:
+#        condition: service_healthy
+#      mysql-contenedor:
+#        condition: service_healthy
     links:
       - config-server
       - eureka-server
@@ -98,11 +100,11 @@ services:
       - "9003:9003"
     expose:
       - '9003'
-    depends_on:
-      config-server:
-        condition: service_healthy
-      eureka-server:
-        condition: service_healthy
+#    depends_on:
+#      config-server:
+#        condition: service_healthy
+#      eureka-server:
+#        condition: service_healthy
     links:
       - config-server
       - eureka-server
