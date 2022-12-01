@@ -4,15 +4,15 @@ spring:
   rabbitmq:
     username: guest
     password: guest
-    host: rabbitmq-contenedor
+    host: localhost
     port: 5672
   zipkin:
-    baseUrl: http://zipkin-contenedor:9411/
+    baseUrl: http://localhost:9411/
   application:
     name: api-playlist
   datasource:
     driverClassName: com.mysql.jdbc.Driver
-    url: jdbc:mysql://mysql-contenedor:3306/spotify-dev-mysql
+    url: jdbc:mysql://localhost:3306/spotify-dev-mysql
     username: usr-spotify-mysql
     password: pwd-spotify-mysql
   jpa:
@@ -25,4 +25,4 @@ eureka:
       registerWithEureka: true
       fetchRegistry: true
       serviceURL:
-         defaultZone: http://eureka-server:8761/eureka
+         defaultZone: http://localhost:8761/eureka

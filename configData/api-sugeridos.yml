@@ -4,10 +4,10 @@ spring:
   rabbitmq:
     username: guest
     password: guest
-    host: rabbitmq-contenedor
+    host: localhost
     port: 5672
   zipkin:
-    baseUrl: http://zipkin-contenedor:9411/
+    baseUrl: http://localhost:9411/
   application:
     name: api-sugeridos
   data:
@@ -16,7 +16,7 @@ spring:
       password: pwdspotifymongo
       database: spotifydevmongo
       port: 27017
-      host: mongocontenedor
+      host: localhost
     
     
 eureka:
@@ -24,4 +24,4 @@ eureka:
       registerWithEureka: true
       fetchRegistry: false
       serviceURL:
-         defaultZone: http://eureka-server:8761/eureka
+         defaultZone: http://localhost:8761/eureka
