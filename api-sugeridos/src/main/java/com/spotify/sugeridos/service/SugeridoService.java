@@ -32,7 +32,7 @@ public class SugeridoService {
         this.musicFeign = musicFeign;
         this.playlistFeign = playlistFeign;
         this.popularidadMg = new HashMap<>();
-        popularidadMg.put("MUY_POPULAR", 3);
+        popularidadMg.put("MUY_POPULAR", 999);
         popularidadMg.put("NORMAL", 1);
     }
 
