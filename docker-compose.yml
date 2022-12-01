@@ -120,11 +120,11 @@ services:
       MYSQL_ROOT_PASSWORD: 'password'
     ports:
       # <Port exposed> : < MySQL Port running inside container>
-      - '3366:3306'
+      - '3306:3306'
     expose:
-      - '3366'
+      - '3306'
     healthcheck:
-      test: [ "CMD", "usr-spotify", "ping", "-ppwd-spotify", "--silent" ]
+      test: [ "CMD", "usr-spotify-mysql", "ping", "-ppwd-spotify-mysql", "--silent" ]
       interval: 5s
       timeout: 3s
       retries: 10
@@ -137,9 +137,9 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=usr-spotify-mongo
       - MONGO_INITDB_ROOT_PASSWORD=pwd-spotify-mongo
     ports:
-      - 5566:27017
+      - 27017:27017
     expose:
-      - 5566
+      - 27017
   zipkin-contenedor:
     image: openzipkin/zipkin-slim
     container_name: zipkin-contenedor
