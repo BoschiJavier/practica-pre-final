@@ -1,5 +1,5 @@
 server:
-  port: ${PORT:${SERVER_PORT:9003}}
+  port: ${PORT:${SERVER_PORT:0}}
 spring:
   rabbitmq:
     username: guest
