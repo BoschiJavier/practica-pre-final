@@ -13,12 +13,12 @@ import org.junit.jupiter.api.Test;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SpotifyTest extends BaseAPI {
+class SpotifyTest extends BaseAPI {
 
     @Test
     @Tag("functional")
     @DisplayName("Testear toda la aplicacion con api gateway")
-    public void testingAll() {
+    void testingAll() {
 
         given().
                 contentType(ContentType.JSON).
@@ -35,20 +35,31 @@ public class SpotifyTest extends BaseAPI {
                 when().post("/api/v1/playlists");
 
         GetSugerenciaByPopularidadResponse responseOnline = given()
-                .param("popularidad", "MUY_POPULAR")
+                .pathParam("popularidad", "MUY_POPULAR")
                 .when().get("/api/v1/sugeridos/online/{popularidad}")
-                .as(GetSugerenciaByPopularidadResponse.class);
+                .andReturn().body().as(GetSugerenciaByPopularidadResponse.class);
 
         GetSugerenciaByPopularidadResponse responseOffline = given()
-                .param("popularidad", "MUY_POPULAR")
+                .pathParam("popularidad", "MUY_POPULAR")
                 .when().get("/api/v1/sugeridos/offline/{popularidad}")
-                .as(GetSugerenciaByPopularidadResponse.class);
+                .andReturn().body().as(GetSugerenciaByPopularidadResponse.class);
+
+
+
+
 
         assertEquals(responseOnline.getMusics().size(), 1);
         assertEquals(responseOnline.getPlaylist().size(), 1);
 
         assertEquals(responseOffline.getMusics().size(), 1);
         assertEquals(responseOffline.getPlaylist().size(), 1);
+
+        given()
+                .pathParam("id", 158L).
+                when().delete("/api/v1/musics/{id}");
+        given()
+                .pathParam("id", 365L).
+                when().delete("/api/v1/playlists/{id}");
     }
 
     @Getter
